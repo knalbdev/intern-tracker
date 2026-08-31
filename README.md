@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Dashboard PKL
 
-## Getting Started
+Dashboard overview pencapaian PKL, datanya diambil langsung dari Google Spreadsheet:
+[Data Base PKL A8 2026](https://docs.google.com/spreadsheets/d/1OLl6dywYVx_I_I3sinI5MY-38VTrimp3WaEZ4cCWPJQ).
 
-First, run the development server:
+### Menjalankan
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Buka [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Cara kerja pengambilan data
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `app/api/sheet-data/route.ts` mengambil tab **Jonggol Ikhwan**, **Akhwat**, dan
+  **Solo** langsung dari endpoint CSV publik Google Sheets (`gviz/tq`), tanpa API
+  key — karena sheet ini di-share "siapa saja yang punya link". Setiap request selalu
+  mengambil data terbaru (`no-store`), tidak ada cache di server.
+- `lib/sheets.ts` mem-parsing baris mentah per siswa (nama, kelas, tempat PKL,
+  gaji/uang saku, dsb) menjadi data terstruktur. `lib/aggregate.ts` menghitung
+  semua rollup (per cabang, per jurusan, per kelas, per unit/perusahaan, per siswa).
+- Di browser, `components/Dashboard.tsx` melakukan polling ke API tersebut setiap
+  60 detik, plus revalidasi saat tab difokuskan lagi, dan ada tombol **Refresh**
+  untuk memuat ulang seketika. Ini bukan push-realtime (websocket), tapi selalu
+  menampilkan data terbaru dari spreadsheet dalam hitungan detik saat diminta.
+- ID spreadsheet bisa diganti lewat env var `PKL_SPREADSHEET_ID` bila suatu saat
+  sheet-nya dipindah/diduplikasi.
 
-## Learn More
+### Catatan tentang data sumber
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Kolom "Kelas" diisi manual dan formatnya tidak selalu konsisten (mis. "XII RPL"
+  vs "12 RPL") — dashboard menampilkan apa adanya sesuai isi sheet.
+- Nilai gaji/uang saku kadang berupa teks non-angka ("Estimated", "per project",
+  dsb). Nilai seperti ini tidak dihitung ke Total Pendapatan, tapi jumlahnya
+  ditampilkan di kartu "Penempatan Belum Ada Data Gaji" agar tidak menyesatkan.
+- Total yang dihitung dashboard ini bisa sedikit berbeda dari tab "Ringkasan
+  Magang" di spreadsheet — dashboard menghitung langsung dari seluruh baris siswa
+  yang ada saat itu, sedangkan formula di tab ringkasan bisa saja belum mencakup
+  baris yang baru ditambahkan.
