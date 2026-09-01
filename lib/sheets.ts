@@ -144,6 +144,8 @@ function parseCabangTab(cabang: string, rows: string[][]): Student[] {
       (p) => p.salaryRaw && p.salaryAmount === null
     ).length;
 
+    const sudahMulai = cell(row, FIXED_COLS.sudahMulai).toUpperCase() === "TRUE";
+
     students.push({
       cabang,
       kelas,
@@ -151,8 +153,11 @@ function parseCabangTab(cabang: string, rows: string[][]): Student[] {
       no: noRaw,
       nama,
       kontakSiswa: cell(row, FIXED_COLS.kontakSiswa),
-      sudahMulai: cell(row, FIXED_COLS.sudahMulai).toUpperCase() === "TRUE",
-      diterima: placements.length > 0,
+      sudahMulai,
+      // "Diterima" mengikuti checkbox "Sudah Mulai" di sheet, bukan apakah
+      // kolom Nama Perusahaan sudah terisi -- ini definisi yang dipilih
+      // sekolah, meski beberapa siswa "sudah mulai" belum punya data tempat PKL.
+      diterima: sudahMulai,
       placements,
       totalPendapatan,
       pendapatanTidakTerbaca,
