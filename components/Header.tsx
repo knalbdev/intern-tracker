@@ -1,18 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { IconClock, IconRefresh } from "./icons";
-
-function timeAgo(iso: string): string {
-  const seconds = Math.max(0, Math.round((Date.now() - new Date(iso).getTime()) / 1000));
-  if (seconds < 5) return "baru saja";
-  if (seconds < 60) return `${seconds} detik lalu`;
-  const minutes = Math.round(seconds / 60);
-  if (minutes < 60) return `${minutes} menit lalu`;
-  const hours = Math.round(minutes / 60);
-  return `${hours} jam lalu`;
-}
 
 function Logo() {
   const [failed, setFailed] = useState(false);
@@ -40,14 +30,56 @@ function Logo() {
   );
 }
 
+function StatusBadge({
+  fetchedAt,
+  isValidating,
+  refreshMs,
+}: {
+  fetchedAt: string;
+  isValidating: boolean;
+  refreshMs: number;
+}) {
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(id);
+  }, []);
+
+  const fetchedMs = new Date(fetchedAt).getTime();
+  const elapsedSec = Math.max(0, Math.round((now - fetchedMs) / 1000));
+  const nextInSec = Math.max(0, Math.round(refreshMs / 1000 - elapsedSec));
+
+  const label = isValidating
+    ? "Menyegarkan…"
+    : elapsedSec < 3
+      ? "Baru diperbarui"
+      : `Diperbarui ${elapsedSec}dtk lalu · refresh otomatis dalam ${nextInSec}dtk`;
+
+  return (
+    <span className="hidden items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-500 sm:inline-flex">
+      <span className="relative flex h-2 w-2">
+        <span
+          className={`absolute inline-flex h-full w-full rounded-full bg-emerald-400 ${isValidating ? "animate-ping" : ""}`}
+        />
+        <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+      </span>
+      <IconClock className="text-slate-400" />
+      {label}
+    </span>
+  );
+}
+
 export function Header({
   fetchedAt,
   isValidating,
   onRefresh,
+  refreshMs,
 }: {
   fetchedAt: string | undefined;
   isValidating: boolean;
   onRefresh: () => void;
+  refreshMs: number;
 }) {
   return (
     <header className="sticky top-0 z-20 border-b border-slate-200/70 bg-white/80 backdrop-blur-md">
@@ -66,10 +98,7 @@ export function Header({
 
         <div className="flex items-center gap-3">
           {fetchedAt && (
-            <span className="hidden items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-500 sm:inline-flex">
-              <IconClock className="text-slate-400" />
-              {isValidating ? "Menyegarkan…" : `Diperbarui ${timeAgo(fetchedAt)}`}
-            </span>
+            <StatusBadge fetchedAt={fetchedAt} isValidating={isValidating} refreshMs={refreshMs} />
           )}
           <button
             onClick={onRefresh}

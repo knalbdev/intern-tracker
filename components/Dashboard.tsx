@@ -12,7 +12,7 @@ import { StudentTable } from "./StudentTable";
 import { Header } from "./Header";
 import { IconCheck, IconPercent, IconUsers, IconWallet } from "./icons";
 
-const REFRESH_MS = 60_000;
+const REFRESH_MS = 15_000;
 
 const fetcher = (url: string) =>
   fetch(url).then(async (res) => {
@@ -27,7 +27,7 @@ export function Dashboard() {
   const { data, error, isLoading, isValidating, mutate } = useSWR<DashboardData>(
     "/api/sheet-data",
     fetcher,
-    { refreshInterval: REFRESH_MS, revalidateOnFocus: true }
+    { refreshInterval: REFRESH_MS, revalidateOnFocus: true, revalidateOnReconnect: true }
   );
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
 
@@ -76,7 +76,12 @@ export function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-50 via-slate-50 to-white">
-      <Header fetchedAt={data?.fetchedAt} isValidating={isValidating} onRefresh={() => mutate()} />
+      <Header
+        fetchedAt={data?.fetchedAt}
+        isValidating={isValidating}
+        onRefresh={() => mutate()}
+        refreshMs={REFRESH_MS}
+      />
 
       <div className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6 lg:px-8">
         {error && (
