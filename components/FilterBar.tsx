@@ -1,4 +1,4 @@
-import { IconSearch, IconSliders } from "./icons";
+import { IconAlert, IconSearch, IconSliders } from "./icons";
 
 const ALL = "Semua";
 
@@ -37,9 +37,16 @@ export type Filters = {
   jurusan: string;
   kelas: string;
   query: string;
+  belumGaji: boolean;
 };
 
-export const DEFAULT_FILTERS: Filters = { cabang: ALL, jurusan: ALL, kelas: ALL, query: "" };
+export const DEFAULT_FILTERS: Filters = {
+  cabang: ALL,
+  jurusan: ALL,
+  kelas: ALL,
+  query: "",
+  belumGaji: false,
+};
 
 export function FilterBar({
   filters,
@@ -47,15 +54,21 @@ export function FilterBar({
   cabangOptions,
   jurusanOptions,
   kelasOptions,
+  belumGajiCount,
 }: {
   filters: Filters;
   onChange: (f: Filters) => void;
   cabangOptions: string[];
   jurusanOptions: string[];
   kelasOptions: string[];
+  belumGajiCount: number;
 }) {
   const isFiltered =
-    filters.cabang !== ALL || filters.jurusan !== ALL || filters.kelas !== ALL || filters.query !== "";
+    filters.cabang !== ALL ||
+    filters.jurusan !== ALL ||
+    filters.kelas !== ALL ||
+    filters.query !== "" ||
+    filters.belumGaji;
 
   return (
     <div className="flex flex-wrap items-end gap-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200/70">
@@ -93,6 +106,26 @@ export function FilterBar({
           />
         </div>
       </label>
+      <button
+        type="button"
+        onClick={() => onChange({ ...filters, belumGaji: !filters.belumGaji })}
+        aria-pressed={filters.belumGaji}
+        className={`flex items-center gap-1.5 self-end rounded-xl px-3 py-2 text-sm font-medium transition ${
+          filters.belumGaji
+            ? "bg-amber-500 text-white shadow-sm"
+            : "bg-slate-100 text-slate-600 hover:bg-slate-200/70"
+        }`}
+      >
+        <IconAlert className={filters.belumGaji ? "text-white" : "text-amber-500"} />
+        Belum Dapat Gaji
+        <span
+          className={`ml-0.5 rounded-full px-1.5 py-0.5 text-xs font-semibold tabular-nums ${
+            filters.belumGaji ? "bg-white/20" : "bg-slate-200 text-slate-500"
+          }`}
+        >
+          {belumGajiCount}
+        </span>
+      </button>
       {isFiltered && (
         <button
           onClick={() => onChange(DEFAULT_FILTERS)}

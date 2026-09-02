@@ -31,7 +31,7 @@ export function Dashboard() {
   );
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
 
-  const filteredStudents = useMemo(() => {
+  const baseFilteredStudents = useMemo(() => {
     if (!data) return [];
     const q = filters.query.trim().toLowerCase();
     return data.students.filter((s) => {
@@ -47,6 +47,16 @@ export function Dashboard() {
       return true;
     });
   }, [data, filters]);
+
+  const belumGajiCount = useMemo(
+    () => baseFilteredStudents.filter((s) => s.totalPendapatan === 0).length,
+    [baseFilteredStudents]
+  );
+
+  const filteredStudents = useMemo(() => {
+    if (!filters.belumGaji) return baseFilteredStudents;
+    return baseFilteredStudents.filter((s) => s.totalPendapatan === 0);
+  }, [baseFilteredStudents, filters.belumGaji]);
 
   const overview = useMemo(() => computeOverview(filteredStudents), [filteredStudents]);
   const byCabang = useMemo(
@@ -104,6 +114,7 @@ export function Dashboard() {
               cabangOptions={data.cabangList}
               jurusanOptions={data.jurusanList}
               kelasOptions={kelasOptions}
+              belumGajiCount={belumGajiCount}
             />
 
             <section className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
