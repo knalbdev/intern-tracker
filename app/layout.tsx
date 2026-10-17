@@ -14,6 +14,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "PKL SMK IDN Bogor",
+  icons: {
+    icon: "/idn.png?v=idn",
+    shortcut: "/favicon.ico?v=idn",
+    apple: "/apple-touch-icon.png?v=idn",
+  },
   description: "Program Praktik Kerja Lapangan SMK IDN Bogor — kompetensi, karakter, dan pengalaman nyata di dunia industri.",
 };
 
