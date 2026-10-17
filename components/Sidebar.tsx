@@ -6,10 +6,10 @@ import Image from "next/image";
 import { IconBuilding, IconPercent, IconUsers, IconWallet } from "./icons";
 
 const links = [
-  { href: "/", label: "Ringkasan", icon: IconPercent },
-  { href: "/sebaran", label: "Sebaran PKL", icon: IconBuilding },
-  { href: "/pendapatan", label: "Pendapatan", icon: IconWallet },
-  { href: "/peserta", label: "Data peserta", icon: IconUsers },
+  { href: "/dashboard", label: "Ringkasan", icon: IconPercent },
+  { href: "/dashboard/sebaran", label: "Sebaran PKL", icon: IconBuilding },
+  { href: "/dashboard/pendapatan", label: "Pendapatan", icon: IconWallet },
+  { href: "/dashboard/peserta", label: "Data peserta", icon: IconUsers },
 ];
 
 export function Sidebar() {
@@ -17,7 +17,7 @@ export function Sidebar() {
 
   return (
     <aside className="sidebar">
-      <Link href="/" className="brand" aria-label="PKL Tracker, kembali ke ringkasan">
+      <Link href="/dashboard" className="brand" aria-label="PKL Tracker, kembali ke ringkasan">
         <span className="brand-logo"><Image src="/idn.png" alt="IDN" width={38} height={38} priority /></span>
         <span><strong>PKL<span className="text-emerald-600">track</span><span className="text-emerald-500">.</span></strong><small>SMK IDN · Internship monitor</small></span>
       </Link>
@@ -30,6 +30,7 @@ export function Sidebar() {
             </Link>
           ))}
         </nav>
+        <Link href="/" className="nav-link mt-5">← Kembali ke beranda</Link>
         <div className="sidebar-note">
           <span className="text-xl text-emerald-600"><IconBuilding /></span>
           <h3>Langkah kecil hari ini.<br />Masa depan yang besar.</h3>

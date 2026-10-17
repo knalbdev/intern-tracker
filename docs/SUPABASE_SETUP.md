@@ -7,7 +7,7 @@ Panduan diperiksa pada 17 Oktober 2026. Setup ini memakai project baru pada pake
 - Google Spreadsheet yang sekarang tetap menjadi sumber utama seluruh data operasional PKL: siswa, kelas, status, penempatan, dan gaji. Tidak ada migrasi atau sinkronisasi tulis balik.
 - Supabase menyimpan konten editorial: pengenalan program, profil perusahaan, dokumentasi, serta referensi media.
 - Jumlah siswa dan penempatan perusahaan tetap dihitung dari spreadsheet. `companies.spreadsheet_aliases` hanya memetakan variasi nama perusahaan tanpa meminta editor spreadsheet mengganti namanya.
-- Setup awal mengelola konten melalui Supabase Dashboard. Belum ada halaman admin website, login admin, SDK, atau koneksi Supabase pada aplikasi.
+- Konten dikelola melalui Supabase Dashboard. Landing page `/` membaca konten terbit melalui REST API Supabase di server dengan publishable key dan cache 5 menit. Dashboard operasional berada di `/dashboard`. Belum ada halaman admin website atau login admin.
 
 ## 1. Buat akun dan project Free
 
@@ -84,7 +84,7 @@ Biarkan `PKL_SPREADSHEET_ID` yang sudah ada tetap sama. Bila tidak diset, aplika
 
 Publishable key memang dirancang untuk digunakan client; batas aksesnya ditentukan grants dan RLS. Jangan menaruh password database, secret key, atau `service_role` key pada variabel `NEXT_PUBLIC_*`, source code, atau chat. Setup pembacaan konten ini tidak memerlukan secret key.
 
-`.env.local` sudah diabaikan Git oleh `.gitignore`. Menambahkan environment variable saja belum menghubungkan aplikasi: integrasi SDK/client dan landing page masih perlu diimplementasikan. Saat kelak deploy, tambahkan variabel yang sama pada konfigurasi hosting, lalu restart/redeploy aplikasi.
+`.env.local` sudah diabaikan Git oleh `.gitignore`. Landing page kini membaca dua variabel ini melalui modul `lib/public-content.ts`. Tidak memerlukan SDK atau secret key untuk pembacaan konten publik. Saat kelak deploy, tambahkan variabel yang sama pada konfigurasi hosting, lalu restart/redeploy aplikasi.
 
 ## 6. Verifikasi setup
 
@@ -123,7 +123,7 @@ Hasil yang diharapkan: 0. Setelah satu draf diterbitkan, hasil menjadi 1. Ini pe
 
 ## Tahap berikutnya
 
-Setelah setup akun selesai, aplikasi dapat dihubungkan menggunakan dua environment variable di atas. Belum ada perubahan pada dashboard atau alur spreadsheet. Landing page nantinya mengambil konten terbit dari Supabase, sementara statistik PKL tetap berasal dari spreadsheet. Kebijakan akses dashboard PKL tetap harus diimplementasikan tersendiri jika dashboard ingin dibatasi internal.
+Landing page `/` sudah membaca konten terbit, profil perusahaan, serta 12 dokumentasi terbaru untuk tahun ajaran 2026/2027. Konten Supabase diperbarui melalui cache sekitar 5 menit setelah perubahan (revalidasi terjadi ketika halaman diakses). Jika tabel kosong, bagian perusahaan/dokumentasi menampilkan informasi belum tersedia. Pengantar program dasar tetap bersumber dari pedoman; draf Supabase tidak dibaca. Dashboard operasional tetap memakai spreadsheet, pada `/dashboard` dan subhalamannya. URL lama `/sebaran`, `/pendapatan`, `/peserta` dialihkan ke subhalaman dashboard yang sesuai. Kebijakan akses dashboard PKL tetap harus diimplementasikan tersendiri jika dashboard ingin dibatasi internal.
 
 ## Referensi resmi
 

@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dashboard PKL",
-  description: "Overview pencapaian PKL — sebaran peserta dan pendapatan, live dari spreadsheet",
+  title: "PKL SMK IDN Bogor",
+  description: "Program Praktik Kerja Lapangan SMK IDN Bogor — kompetensi, karakter, dan pengalaman nyata di dunia industri.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

@@ -160,7 +160,7 @@ export function Dashboard({ view = "ringkasan" }: { view?: DashboardView }) {
             {view === "ringkasan" && (
               <>
                 <section className="overview-banner" aria-label="Ringkasan progres PKL">
-                  <div className="banner-copy"><span className="banner-kicker">PERJALANAN MENUJU DUNIA KERJA</span><h2>Talenta hebat.<br />Peluang tanpa batas.</h2><p>Pantau penempatan, kenali perkembangan, dan dukung<br className="hidden sm:block" /> setiap siswa untuk melangkah lebih jauh.</p><Link href="/peserta">Jelajahi data peserta <span aria-hidden="true">↗</span></Link></div>
+                  <div className="banner-copy"><span className="banner-kicker">PERJALANAN MENUJU DUNIA KERJA</span><h2>Talenta hebat.<br />Peluang tanpa batas.</h2><p>Pantau penempatan, kenali perkembangan, dan dukung<br className="hidden sm:block" /> setiap siswa untuk melangkah lebih jauh.</p><Link href="/dashboard/peserta">Jelajahi data peserta <span aria-hidden="true">↗</span></Link></div>
                   <div className="banner-progress"><div className="progress-ring" style={{ background: `conic-gradient(#b9f479 ${overview.persenDiterima * 3.6}deg, #ffffff20 0deg)` }}><div><strong>{formatPercent(overview.persenDiterima)}</strong><span>Sudah diterima</span></div></div><p><span className="inline-block h-1.5 w-1.5 rounded-full bg-lime-300 mr-2" />{overview.sudahDiterima} dari {overview.totalSiswa} siswa pada pilihan ini</p></div>
                 </section>
                 <section aria-label="Statistik PKL" className="stats-grid">

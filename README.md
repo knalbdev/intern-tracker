@@ -10,7 +10,28 @@ npm install
 npm run dev
 ```
 
-Buka [http://localhost:3000](http://localhost:3000).
+Buka [http://localhost:3000](http://localhost:3000) untuk landing page publik.
+
+### Halaman portal
+
+- `/`: program PKL, bidang keahlian, alur program, perusahaan, dokumentasi, dan FAQ.
+- `/dashboard`: ringkasan operasional dari spreadsheet.
+- `/dashboard/sebaran`, `/dashboard/pendapatan`, `/dashboard/peserta`: halaman dashboard dengan pencarian/filter masing-masing.
+- URL lama `/sebaran`, `/pendapatan`, `/peserta` dialihkan ke subhalaman dashboard.
+
+### Konten dan media publik
+
+Landing page membaca konten **terbit** dari Supabase melalui REST API server dengan cache 5 menit. Isi `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` dalam `.env.local` atau environment hosting. `.env.local` diabaikan Git. Tanpa konfigurasi atau saat layanan gagal, pengantar program dasar tetap tampil dan bagian dinamis menampilkan pesan ketersediaan.
+
+Pengelolaan konten melalui Supabase Dashboard: `content_sections`, `companies`, `documentation_posts`, `documentation_images`. Media siap tayang berada di bucket `site-media`; gunakan path relatif dalam database. Konten awal SQL masih draf, dan baru dibaca setelah `is_published = true`. Profil perusahaan/galeri tidak diisi data fiktif. Batas dokumentasi landing page: 12 artikel terbaru tahun ajaran 2026/2027.
+
+Lihat [setup Supabase](docs/SUPABASE_SETUP.md) dan [brief konten berdasarkan pedoman](docs/PKL_CONTENT_BRIEF.md). Data operasional PKL tetap permanen di spreadsheet. Pemindahan URL dashboard bukan penambahan autentikasi.
+
+Pemeriksaan integrasi konten:
+
+```bash
+node --test tests/public-content.test.mjs
+```
 
 ### Cara kerja pengambilan data
 
@@ -22,7 +43,7 @@ Buka [http://localhost:3000](http://localhost:3000).
   gaji/uang saku, dsb) menjadi data terstruktur. `lib/aggregate.ts` menghitung
   semua rollup (per cabang, per jurusan, per kelas, per unit/perusahaan, per siswa).
 - Di browser, `components/Dashboard.tsx` melakukan polling ke API tersebut setiap
-  60 detik, plus revalidasi saat tab difokuskan lagi, dan ada tombol **Refresh**
+  15 detik, plus revalidasi saat tab difokuskan lagi, dan ada tombol **Refresh**
   untuk memuat ulang seketika. Ini bukan push-realtime (websocket), tapi selalu
   menampilkan data terbaru dari spreadsheet dalam hitungan detik saat diminta.
 - ID spreadsheet bisa diganti lewat env var `PKL_SPREADSHEET_ID` bila suatu saat

@@ -1,8 +1,5 @@
-import type { Metadata } from "next";
-import { Dashboard } from "@/components/Dashboard";
-
-export const metadata: Metadata = { title: "Sebaran PKL | PKLtrack" };
+import { redirect } from "next/navigation";
 
 export default function Page() {
-  return <Dashboard view="sebaran" />;
+  redirect("/dashboard/sebaran");
 }
