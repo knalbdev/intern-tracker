@@ -74,11 +74,11 @@ export default async function Home() {
         <section id="faq" className="lp-faq-wrap"><div className="lp-container lp-section lp-faq"><div><p className="lp-eyebrow">06 / TANYA JAWAB</p><h2>Kenali programnya.<br /><em>Siapkan langkahmu.</em></h2><p>Informasi program merujuk pada pedoman PKL<br />SMK IDN Bogor tahun ajaran 2026/2027.</p></div><div>{faqs.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></div>{additionalSections.length > 0 && <div className="lp-container lp-program-details"><h3>Informasi program selengkapnya</h3>{additionalSections.map((section) => <details key={section.id}><summary>{section.title}<span aria-hidden="true">+</span></summary><p>{section.body}</p></details>)}</div>}</section>
         <section id="kontak" className="lp-container lp-section lp-contact">
           <div><p className="lp-eyebrow">07 / HUBUNGI KAMI</p><h2>Mari terhubung.<br /><em>Buka peluang bersama.</em></h2><p>Informasi program dan kerja sama PKL SMK IDN Bogor.</p></div>
-          <a href="mailto:internsip@idn.sch.id" className="lp-button">internsip@idn.sch.id <span aria-hidden="true">↗</span></a>
+          <a href="mailto:internship@idn.sch.id" className="lp-button">internship@idn.sch.id <span aria-hidden="true">↗</span></a>
         </section>
         <section className="lp-container lp-cta"><div><p className="lp-eyebrow">PENGALAMAN HARI INI. BEKAL UNTUK ESOK.</p><h2>Satu langkah nyata.<br /><em>Banyak kemungkinan.</em></h2></div><div><p>Ikuti perkembangan program PKL<br />melalui dashboard pemantauan.</p><Link href="/dashboard" className="lp-button">Buka dashboard PKL <span aria-hidden="true">↗</span></Link></div><span className="lp-cta-spark" aria-hidden="true">✳</span></section>
       </main>
-      <footer className="lp-footer lp-container"><Link href="/" className="lp-brand"><Image src="/idn.png" alt="IDN" width={34} height={34} /><span>PKL<span className="lp-brand-light">track</span><b>.</b><small>SMK IDN BOGOR</small></span></Link><p>Kompetensi. Karakter. Pengalaman nyata.</p><a href="mailto:internsip@idn.sch.id">internsip@idn.sch.id ↗</a><a href="#top">Kembali ke atas ↑</a><small>Program PKL · Tahun ajaran 2026/2027</small></footer>
+      <footer className="lp-footer lp-container"><Link href="/" className="lp-brand"><Image src="/idn.png" alt="IDN" width={34} height={34} /><span>PKL<span className="lp-brand-light">track</span><b>.</b><small>SMK IDN BOGOR</small></span></Link><p>Kompetensi. Karakter. Pengalaman nyata.</p><a href="mailto:internship@idn.sch.id">internship@idn.sch.id ↗</a><a href="#top">Kembali ke atas ↑</a><small>Program PKL · Tahun ajaran 2026/2027</small></footer>
     </div>
   );
 }
