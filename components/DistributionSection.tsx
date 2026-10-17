@@ -23,7 +23,7 @@ function StatusBarChart({ title, data }: { title: string; data: Bucket[] }) {
   }));
 
   return (
-    <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200/70">
+    <div className="rounded-xl bg-white p-5 shadow-[0_2px_3px_#253a2508] ring-1 ring-[#e5eae3]">
       <h3 className="text-sm font-semibold text-slate-700">{title}</h3>
       <div className="mt-3 h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
@@ -37,7 +37,7 @@ function StatusBarChart({ title, data }: { title: string; data: Bucket[] }) {
               tick={{ fontSize: 12, fill: ink.secondary }}
             />
             <Tooltip
-              cursor={{ fill: "rgba(79,70,229,0.05)" }}
+              cursor={{ fill: "rgba(36,112,76,0.05)" }}
               contentStyle={{
                 fontSize: 12,
                 borderRadius: 12,
@@ -77,21 +77,21 @@ export function DistributionSection({
   byKelas: Bucket[];
 }) {
   return (
-    <section className="space-y-4">
+    <section id="sebaran" className="space-y-4">
       <SectionHeading eyebrow="Peserta" title="Sebaran PKL" />
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <StatusBarChart title="Per Cabang" data={byCabang} />
         <StatusBarChart title="Per Jurusan" data={byJurusan} />
       </div>
 
-      <div className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200/70">
+      <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_3px_#253a2508] ring-1 ring-[#e5eae3]">
         <h3 className="border-b border-slate-100 px-5 py-3.5 text-sm font-semibold text-slate-700">
           Per Kelas
         </h3>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-slate-50/80 text-left text-xs font-semibold uppercase tracking-wide text-slate-400">
+              <tr className="bg-[#f7f9f5] text-left text-xs font-semibold uppercase tracking-wide text-slate-400">
                 <th className="px-5 py-2.5 font-semibold">Kelas</th>
                 <th className="px-5 py-2.5 text-right font-semibold">Total</th>
                 <th className="px-5 py-2.5 text-right font-semibold">Diterima</th>

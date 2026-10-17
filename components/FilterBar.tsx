@@ -19,7 +19,7 @@ function Select({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="min-w-[9rem] cursor-pointer appearance-none rounded-xl border-0 bg-slate-100 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-200/70 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        className="min-w-[9rem] cursor-pointer appearance-none rounded-xl border-0 bg-slate-100 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-200/70 focus:outline-none focus:ring-2 focus:ring-emerald-400"
       >
         <option value={ALL}>{ALL}</option>
         {options.map((o) => (
@@ -71,7 +71,7 @@ export function FilterBar({
     filters.belumGaji;
 
   return (
-    <div className="flex flex-wrap items-end gap-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200/70">
+    <div className="filter-panel">
       <div className="flex items-center gap-2 self-center pr-1 text-slate-400">
         <IconSliders />
         <span className="hidden text-xs font-semibold uppercase tracking-wide sm:inline">Filter</span>
@@ -101,8 +101,8 @@ export function FilterBar({
           <input
             value={filters.query}
             onChange={(e) => onChange({ ...filters, query: e.target.value })}
-            placeholder="Ketik nama..."
-            className="w-full rounded-xl border-0 bg-slate-100 py-2 pl-9 pr-3 text-sm text-slate-700 transition placeholder:text-slate-400 hover:bg-slate-200/70 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            placeholder="Nama siswa atau perusahaan…"
+            className="w-full rounded-xl border-0 bg-slate-100 py-2 pl-9 pr-3 text-sm text-slate-700 transition placeholder:text-slate-400 hover:bg-slate-200/70 focus:outline-none focus:ring-2 focus:ring-emerald-400"
           />
         </div>
       </label>
@@ -112,12 +112,12 @@ export function FilterBar({
         aria-pressed={filters.belumGaji}
         className={`flex items-center gap-1.5 self-end rounded-xl px-3 py-2 text-sm font-medium transition ${
           filters.belumGaji
-            ? "bg-amber-500 text-white shadow-sm"
+            ? "bg-amber-500 text-white shadow-[0_2px_3px_#253a2508]"
             : "bg-slate-100 text-slate-600 hover:bg-slate-200/70"
         }`}
       >
         <IconAlert className={filters.belumGaji ? "text-white" : "text-amber-500"} />
-        Belum Dapat Gaji
+        Tanpa pendapatan tercatat
         <span
           className={`ml-0.5 rounded-full px-1.5 py-0.5 text-xs font-semibold tabular-nums ${
             filters.belumGaji ? "bg-white/20" : "bg-slate-200 text-slate-500"
@@ -129,7 +129,7 @@ export function FilterBar({
       {isFiltered && (
         <button
           onClick={() => onChange(DEFAULT_FILTERS)}
-          className="rounded-xl px-3 py-2 text-xs font-semibold text-indigo-600 transition hover:bg-indigo-50"
+          className="rounded-xl px-3 py-2 text-xs font-semibold text-emerald-700 transition hover:bg-emerald-50"
         >
           Reset filter
         </button>

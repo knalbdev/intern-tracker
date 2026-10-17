@@ -17,10 +17,10 @@ export function StudentTable({ students }: { students: Student[] }) {
   if (page >= pageCount) setPage(0);
 
   return (
-    <section className="space-y-3">
+    <section id="peserta" className="space-y-3">
       <SectionHeading
         eyebrow={`${students.length} peserta`}
-        title="Detail Peserta"
+        title="Kenali setiap peserta"
         action={
           <div className="flex items-center gap-2 text-xs font-medium text-slate-500">
             <button
@@ -43,11 +43,11 @@ export function StudentTable({ students }: { students: Student[] }) {
           </div>
         }
       />
-      <div className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200/70">
+      <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_3px_#253a2508] ring-1 ring-[#e5eae3]">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-slate-50/80 text-left text-xs font-semibold uppercase tracking-wide text-slate-400">
+              <tr className="bg-[#f7f9f5] text-left text-xs font-semibold uppercase tracking-wide text-slate-400">
                 <th className="px-5 py-2.5">Nama</th>
                 <th className="px-5 py-2.5">Cabang</th>
                 <th className="px-5 py-2.5">Kelas</th>
@@ -63,7 +63,7 @@ export function StudentTable({ students }: { students: Student[] }) {
                   key={`${s.cabang}-${s.kelas}-${s.no}-${s.nama}`}
                   className="border-b border-slate-100 last:border-0 hover:bg-slate-50/60"
                 >
-                  <td className="px-5 py-2.5 font-medium text-slate-800">{s.nama}</td>
+                  <td className="px-5 py-3 font-medium text-slate-800"><span className="flex items-center gap-3"><span aria-hidden="true" className="table-avatar">{s.nama.split(/\s+/).slice(0, 2).map((n) => n[0]).join("")}</span>{s.nama}</span></td>
                   <td className="px-5 py-2.5 text-slate-500">{s.cabang}</td>
                   <td className="px-5 py-2.5 text-slate-500">{s.kelas}</td>
                   <td className="px-5 py-2.5 text-slate-500">{s.jurusan}</td>

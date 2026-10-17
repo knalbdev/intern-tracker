@@ -1,22 +1,9 @@
 import type { ReactNode } from "react";
 
-export function SectionHeading({
-  eyebrow,
-  title,
-  action,
-}: {
-  eyebrow: string;
-  title: string;
-  action?: ReactNode;
-}) {
+export function SectionHeading({ eyebrow, title, action }: { eyebrow: string; title: string; action?: ReactNode }) {
   return (
-    <div className="flex items-end justify-between gap-3">
-      <div>
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-indigo-500">
-          {eyebrow}
-        </p>
-        <h2 className="text-lg font-bold tracking-tight text-slate-900">{title}</h2>
-      </div>
+    <div className="section-heading">
+      <div><p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-700">{eyebrow}</p><h2 className="text-xl font-semibold tracking-tight text-slate-800">{title}</h2></div>
       {action}
     </div>
   );

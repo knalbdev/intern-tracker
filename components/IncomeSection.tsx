@@ -31,7 +31,7 @@ function IncomeBarChart({ title, data }: { title: string; data: Bucket[] }) {
     .sort((a, b) => b.pendapatan - a.pendapatan);
 
   return (
-    <div className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200/70">
+    <div className="rounded-xl bg-white p-5 shadow-[0_2px_3px_#253a2508] ring-1 ring-[#e5eae3]">
       <h3 className="text-sm font-semibold text-slate-700">{title}</h3>
       <div className="mt-3 h-64 w-full">
         <ResponsiveContainer width="100%" height="100%">
@@ -49,7 +49,7 @@ function IncomeBarChart({ title, data }: { title: string; data: Bucket[] }) {
               tick={{ fontSize: 12, fill: ink.secondary }}
             />
             <Tooltip
-              cursor={{ fill: "rgba(79,70,229,0.05)" }}
+              cursor={{ fill: "rgba(36,112,76,0.05)" }}
               formatter={(v) => [formatRupiah(Number(v)), "Pendapatan"]}
               contentStyle={{
                 fontSize: 12,
@@ -71,14 +71,14 @@ function UnitTable({ units }: { units: UnitIncome[] }) {
   const visible = showAll ? units : units.slice(0, 10);
 
   return (
-    <div className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200/70">
+    <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_3px_#253a2508] ring-1 ring-[#e5eae3]">
       <h3 className="border-b border-slate-100 px-5 py-3.5 text-sm font-semibold text-slate-700">
         Per Unit / Perusahaan
       </h3>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-slate-50/80 text-left text-xs font-semibold uppercase tracking-wide text-slate-400">
+            <tr className="bg-[#f7f9f5] text-left text-xs font-semibold uppercase tracking-wide text-slate-400">
               <th className="px-5 py-2.5">Perusahaan</th>
               <th className="px-5 py-2.5 text-right">Siswa</th>
               <th className="px-5 py-2.5 text-right">Penempatan</th>
@@ -109,7 +109,7 @@ function UnitTable({ units }: { units: UnitIncome[] }) {
       {units.length > 10 && (
         <button
           onClick={() => setShowAll((v) => !v)}
-          className="w-full border-t border-slate-100 py-2.5 text-xs font-semibold text-indigo-600 transition hover:bg-indigo-50"
+          className="w-full border-t border-slate-100 py-2.5 text-xs font-semibold text-emerald-700 transition hover:bg-emerald-50"
         >
           {showAll ? "Tampilkan lebih sedikit" : `Tampilkan semua (${units.length})`}
         </button>
@@ -127,14 +127,14 @@ function StudentIncomeTable({ students }: { students: Student[] }) {
   const visible = showAll ? sorted : sorted.slice(0, 10);
 
   return (
-    <div className="overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-slate-200/70">
+    <div className="overflow-hidden rounded-xl bg-white shadow-[0_2px_3px_#253a2508] ring-1 ring-[#e5eae3]">
       <h3 className="border-b border-slate-100 px-5 py-3.5 text-sm font-semibold text-slate-700">
         Per Siswa
       </h3>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="bg-slate-50/80 text-left text-xs font-semibold uppercase tracking-wide text-slate-400">
+            <tr className="bg-[#f7f9f5] text-left text-xs font-semibold uppercase tracking-wide text-slate-400">
               <th className="px-5 py-2.5">Nama</th>
               <th className="px-5 py-2.5">Cabang</th>
               <th className="px-5 py-2.5">Jurusan</th>
@@ -170,7 +170,7 @@ function StudentIncomeTable({ students }: { students: Student[] }) {
       {sorted.length > 10 && (
         <button
           onClick={() => setShowAll((v) => !v)}
-          className="w-full border-t border-slate-100 py-2.5 text-xs font-semibold text-indigo-600 transition hover:bg-indigo-50"
+          className="w-full border-t border-slate-100 py-2.5 text-xs font-semibold text-emerald-700 transition hover:bg-emerald-50"
         >
           {showAll ? "Tampilkan lebih sedikit" : `Tampilkan semua (${sorted.length})`}
         </button>
@@ -195,19 +195,19 @@ export function IncomeSection({
   penempatanTanpaGaji: number;
 }) {
   return (
-    <section className="space-y-4">
-      <SectionHeading eyebrow="Uang Saku" title="Pendapatan" />
+    <section id="pendapatan" className="space-y-4">
+      <SectionHeading eyebrow="Uang Saku" title="Pendapatan siswa" />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <StatCard
-          label="Total Pendapatan Keseluruhan"
+          label="Total pendapatan tercatat"
           value={formatRupiah(total)}
           accent="blue"
           icon={<IconWallet />}
         />
         <StatCard
-          label="Penempatan Belum Ada Data Gaji"
+          label="Gaji tidak terbaca"
           value={String(penempatanTanpaGaji)}
-          sub="tercatat teks non-angka pada kolom Salary"
+          sub="Teks non-angka; kolom kosong tidak dihitung"
           accent="amber"
           icon={<IconAlert />}
         />
