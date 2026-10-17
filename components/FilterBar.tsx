@@ -55,6 +55,9 @@ export function FilterBar({
   jurusanOptions,
   kelasOptions,
   belumGajiCount,
+  showNoIncomeFilter = true,
+  searchLabel = "Cari siswa / perusahaan",
+  searchPlaceholder = "Nama siswa atau perusahaan…",
 }: {
   filters: Filters;
   onChange: (f: Filters) => void;
@@ -62,6 +65,9 @@ export function FilterBar({
   jurusanOptions: string[];
   kelasOptions: string[];
   belumGajiCount: number;
+  showNoIncomeFilter?: boolean;
+  searchLabel?: string;
+  searchPlaceholder?: string;
 }) {
   const isFiltered =
     filters.cabang !== ALL ||
@@ -95,18 +101,18 @@ export function FilterBar({
         onChange={(v) => onChange({ ...filters, kelas: v })}
       />
       <label className="flex min-w-[12rem] flex-1 flex-col gap-1 text-xs font-medium text-slate-500">
-        Cari siswa / perusahaan
+        {searchLabel}
         <div className="relative">
           <IconSearch className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             value={filters.query}
             onChange={(e) => onChange({ ...filters, query: e.target.value })}
-            placeholder="Nama siswa atau perusahaan…"
+            placeholder={searchPlaceholder}
             className="w-full rounded-xl border-0 bg-slate-100 py-2 pl-9 pr-3 text-sm text-slate-700 transition placeholder:text-slate-400 hover:bg-slate-200/70 focus:outline-none focus:ring-2 focus:ring-emerald-400"
           />
         </div>
       </label>
-      <button
+      {showNoIncomeFilter && <button
         type="button"
         onClick={() => onChange({ ...filters, belumGaji: !filters.belumGaji })}
         aria-pressed={filters.belumGaji}
@@ -125,7 +131,7 @@ export function FilterBar({
         >
           {belumGajiCount}
         </span>
-      </button>
+      </button>}
       {isFiltered && (
         <button
           onClick={() => onChange(DEFAULT_FILTERS)}

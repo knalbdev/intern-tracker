@@ -12,6 +12,10 @@ import { IncomeSection } from "./IncomeSection";
 import { StudentTable } from "./StudentTable";
 import { Header } from "./Header";
 import { Sidebar } from "./Sidebar";
+import { CompanyDirectory } from "./CompanyDirectory";
+import { SalaryAchievement } from "./SalaryAchievement";
+import { IncomeAchievement, IncomeLeaderboard } from "./IncomeAchievement";
+import { qualifyingSalaryPlacements, PKL_INCOME_TARGET } from "@/lib/income-target";
 import { IconCheck, IconPercent, IconUsers, IconWallet } from "./icons";
 
 const REFRESH_MS = 15_000;
@@ -41,6 +45,21 @@ const PAGE_CONTENT = {
     title: "Setiap pencapaian, tercatat",
     description: "Telusuri pendapatan siswa dan penempatan di setiap perusahaan.",
   },
+  target: {
+    label: "Target Rp20 juta",
+    title: "Target tercapai, prestasi tercatat",
+    description: "Siswa dengan akumulasi pendapatan PKL tercatat minimal Rp20.000.000.",
+  },
+  gaji: {
+    label: "Gaji ≥ Rp2 juta",
+    title: "Gaji sesuai target, langkah semakin mantap",
+    description: "Siswa dengan gaji tercatat minimal Rp2.000.000 pada setidaknya satu penempatan PKL.",
+  },
+  dudi: {
+    label: "Data DUDI & Mitra",
+    title: "Kenali perusahaan, perluas peluang",
+    description: "Direktori perusahaan tempat siswa magang beserta peserta, kontak, dan detail penempatannya.",
+  },
   peserta: {
     label: "Data peserta",
     title: "Kenali setiap perjalanan siswa",
@@ -63,10 +82,12 @@ export function Dashboard({ view = "ringkasan" }: { view?: DashboardView }) {
     if (!data) return [];
     const q = filters.query.trim().toLowerCase();
     return data.students.filter((s) => {
+      if (view === "target" && s.totalPendapatan < PKL_INCOME_TARGET) return false;
+      if (view === "gaji" && qualifyingSalaryPlacements(s).length === 0) return false;
       if (filters.cabang !== "Semua" && s.cabang !== filters.cabang) return false;
       if (filters.jurusan !== "Semua" && s.jurusan !== filters.jurusan) return false;
       if (filters.kelas !== "Semua" && s.kelas !== filters.kelas) return false;
-      if (q) {
+      if (q && view !== "dudi") {
         const haystack = [s.nama, ...s.placements.map((p) => p.namaPerusahaan)]
           .join(" ")
           .toLowerCase();
@@ -74,7 +95,7 @@ export function Dashboard({ view = "ringkasan" }: { view?: DashboardView }) {
       }
       return true;
     });
-  }, [data, filters]);
+  }, [data, filters, view]);
 
   const belumGajiCount = useMemo(
     () => baseFilteredStudents.filter((s) => s.totalPendapatan === 0).length,
@@ -145,11 +166,14 @@ export function Dashboard({ view = "ringkasan" }: { view?: DashboardView }) {
               jurusanOptions={data.jurusanList}
               kelasOptions={kelasOptions}
               belumGajiCount={belumGajiCount}
+              showNoIncomeFilter={view !== "target" && view !== "gaji" && view !== "dudi"}
+              searchLabel={view === "dudi" ? "Cari perusahaan / siswa / PIC" : undefined}
+              searchPlaceholder={view === "dudi" ? "Nama perusahaan, siswa, lokasi, PIC…" : undefined}
             />
 
-            <p role="status" className="text-xs text-slate-500">
-              Menampilkan <strong className="font-semibold text-emerald-800">{filteredStudents.length}</strong> dari {data.students.length} siswa. Pencarian dan filter berlaku untuk halaman {content.label}.
-            </p>
+            {view !== "dudi" && <p role="status" className="text-xs text-slate-500">
+              Menampilkan <strong className="font-semibold text-emerald-800">{filteredStudents.length}</strong> dari {data.students.length} siswa. Pencarian dan filter berlaku untuk halaman {content.label}{view === "ringkasan" ? ", kecuali klasemen seluruh cabang" : ""}.
+            </p>}
             {filteredStudents.length === 0 && (
               <div className="rounded-xl border border-dashed border-emerald-200 bg-white px-5 py-8 text-center">
                 <h2 className="font-semibold text-slate-700">Tidak ada siswa yang cocok</h2>
@@ -199,8 +223,20 @@ export function Dashboard({ view = "ringkasan" }: { view?: DashboardView }) {
                     icon={<IconWallet />}
                   />
                 </section>
-
+                <IncomeLeaderboard students={data.students} />
               </>
+            )}
+
+            {view === "dudi" && (
+              <CompanyDirectory key={JSON.stringify(filters)} students={filteredStudents} query={filters.query} />
+            )}
+
+            {view === "gaji" && (
+              <SalaryAchievement key={JSON.stringify(filters)} students={filteredStudents} />
+            )}
+
+            {view === "target" && (
+              <IncomeAchievement key={JSON.stringify(filters)} students={filteredStudents} />
             )}
 
             {view === "sebaran" && (

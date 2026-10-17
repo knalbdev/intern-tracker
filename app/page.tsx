@@ -50,9 +50,9 @@ export default async function Home() {
       <a href="#program" className="lp-skip">Lewati navigasi</a>
       <header className="lp-header">
         <Link href="/" className="lp-brand" aria-label="Beranda PKL SMK IDN Bogor"><Image src="/idn.png" alt="Logo IDN" width={42} height={42} priority /><span>PKL<span className="lp-brand-light">track</span><b>.</b><small>SMK IDN BOGOR</small></span></Link>
-        <nav className="lp-nav" aria-label="Navigasi utama"><a href="#program">Program PKL</a><a href="#keahlian">Bidang keahlian</a><a href="#perusahaan">Perusahaan</a><a href="#dokumentasi">Dokumentasi</a></nav>
+        <nav className="lp-nav" aria-label="Navigasi utama"><a href="#program">Program PKL</a><a href="#keahlian">Bidang keahlian</a><a href="#perusahaan">Perusahaan</a><a href="#dokumentasi">Dokumentasi</a><a href="#kontak">Kontak</a></nav>
         <Link href="/dashboard" className="lp-dashboard-link">Dashboard PKL <span aria-hidden="true">↗</span></Link>
-        <details className="lp-mobile-menu"><summary>Menu <span aria-hidden="true">☰</span></summary><nav aria-label="Navigasi ponsel"><a href="#program">Program PKL</a><a href="#keahlian">Bidang keahlian</a><a href="#perusahaan">Perusahaan</a><a href="#dokumentasi">Dokumentasi</a><a href="#faq">Tanya jawab</a></nav></details>
+        <details className="lp-mobile-menu"><summary>Menu <span aria-hidden="true">☰</span></summary><nav aria-label="Navigasi ponsel"><a href="#program">Program PKL</a><a href="#keahlian">Bidang keahlian</a><a href="#perusahaan">Perusahaan</a><a href="#dokumentasi">Dokumentasi</a><a href="#kontak">Kontak</a><a href="#faq">Tanya jawab</a></nav></details>
       </header>
       <main>
         <section className="lp-hero lp-container">
@@ -72,9 +72,13 @@ export default async function Home() {
         <section id="perusahaan" className="lp-companies-wrap"><div className="lp-container lp-section"><div className="lp-section-heading"><div><p className="lp-eyebrow">04 / PERUSAHAAN TEMPAT PKL</p><h2>Ruang bertumbuh.<br /><em>Kesempatan berkarya.</em></h2></div><p>Kenali perusahaan tempat siswa<br />mendapatkan pengalaman profesional.</p></div><CompanyExplorer companies={publicCompanies} unavailable={companies.unavailable} /></div></section>
         <section id="dokumentasi" className="lp-container lp-section"><div className="lp-section-heading"><div><p className="lp-eyebrow">05 / DOKUMENTASI & CERITA</p><h2>Di balik pengalaman,<br /><em>ada cerita.</em></h2></div><p>Catatan perjalanan, kegiatan, dan karya.<br />Langsung dari proses belajar di dunia nyata.</p></div><DocumentationExplorer posts={publicPosts} unavailable={posts.unavailable} /></section>
         <section id="faq" className="lp-faq-wrap"><div className="lp-container lp-section lp-faq"><div><p className="lp-eyebrow">06 / TANYA JAWAB</p><h2>Kenali programnya.<br /><em>Siapkan langkahmu.</em></h2><p>Informasi program merujuk pada pedoman PKL<br />SMK IDN Bogor tahun ajaran 2026/2027.</p></div><div>{faqs.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></div>{additionalSections.length > 0 && <div className="lp-container lp-program-details"><h3>Informasi program selengkapnya</h3>{additionalSections.map((section) => <details key={section.id}><summary>{section.title}<span aria-hidden="true">+</span></summary><p>{section.body}</p></details>)}</div>}</section>
+        <section id="kontak" className="lp-container lp-section lp-contact">
+          <div><p className="lp-eyebrow">07 / HUBUNGI KAMI</p><h2>Mari terhubung.<br /><em>Buka peluang bersama.</em></h2><p>Informasi program dan kerja sama PKL SMK IDN Bogor.</p></div>
+          <a href="mailto:internsip@idn.sch.id" className="lp-button">internsip@idn.sch.id <span aria-hidden="true">↗</span></a>
+        </section>
         <section className="lp-container lp-cta"><div><p className="lp-eyebrow">PENGALAMAN HARI INI. BEKAL UNTUK ESOK.</p><h2>Satu langkah nyata.<br /><em>Banyak kemungkinan.</em></h2></div><div><p>Ikuti perkembangan program PKL<br />melalui dashboard pemantauan.</p><Link href="/dashboard" className="lp-button">Buka dashboard PKL <span aria-hidden="true">↗</span></Link></div><span className="lp-cta-spark" aria-hidden="true">✳</span></section>
       </main>
-      <footer className="lp-footer lp-container"><Link href="/" className="lp-brand"><Image src="/idn.png" alt="IDN" width={34} height={34} /><span>PKL<span className="lp-brand-light">track</span><b>.</b><small>SMK IDN BOGOR</small></span></Link><p>Kompetensi. Karakter. Pengalaman nyata.</p><a href="#top">Kembali ke atas ↑</a><small>Program PKL · Tahun ajaran 2026/2027</small></footer>
+      <footer className="lp-footer lp-container"><Link href="/" className="lp-brand"><Image src="/idn.png" alt="IDN" width={34} height={34} /><span>PKL<span className="lp-brand-light">track</span><b>.</b><small>SMK IDN BOGOR</small></span></Link><p>Kompetensi. Karakter. Pengalaman nyata.</p><a href="mailto:internsip@idn.sch.id">internsip@idn.sch.id ↗</a><a href="#top">Kembali ke atas ↑</a><small>Program PKL · Tahun ajaran 2026/2027</small></footer>
     </div>
   );
 }

@@ -105,3 +105,5 @@ tbody tr { transition: background .15s; }
   .skeleton-row { grid-template-columns: repeat(2,1fr); }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+@media (max-width: 767px) { .sidebar-nav { flex-wrap: wrap; justify-content: flex-start; } }
