@@ -1,51 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { IconBuilding, IconPercent, IconUsers, IconWallet } from "./icons";
 
 const links = [
-  { id: "ringkasan", label: "Ringkasan", icon: IconPercent },
-  { id: "sebaran", label: "Sebaran PKL", icon: IconBuilding },
-  { id: "pendapatan", label: "Pendapatan", icon: IconWallet },
-  { id: "peserta", label: "Data peserta", icon: IconUsers },
+  { href: "/", label: "Ringkasan", icon: IconPercent },
+  { href: "/sebaran", label: "Sebaran PKL", icon: IconBuilding },
+  { href: "/pendapatan", label: "Pendapatan", icon: IconWallet },
+  { href: "/peserta", label: "Data peserta", icon: IconUsers },
 ];
 
 export function Sidebar() {
-  const [active, setActive] = useState("ringkasan");
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      const visible = entries.filter((entry) => entry.isIntersecting);
-      if (visible.length) setActive(visible[0].target.id);
-    }, { rootMargin: "-15% 0px -60% 0px" });
-    // Sections arrive after the spreadsheet request finishes.
-    const observed = new Set<Element>();
-    const observe = () => links.forEach(({ id }) => {
-      const section = document.getElementById(id);
-      if (section && !observed.has(section)) {
-        observer.observe(section);
-        observed.add(section);
-      }
-    });
-    observe();
-    const mutation = new MutationObserver(observe);
-    mutation.observe(document.body, { childList: true, subtree: true });
-    return () => { observer.disconnect(); mutation.disconnect(); };
-  }, []);
+  const pathname = usePathname();
 
   return (
     <aside className="sidebar">
-      <a href="#ringkasan" className="brand" aria-label="PKL Tracker, kembali ke ringkasan">
+      <Link href="/" className="brand" aria-label="PKL Tracker, kembali ke ringkasan">
         <span className="brand-logo"><Image src="/idn.png" alt="IDN" width={38} height={38} priority /></span>
         <span><strong>PKL<span className="text-emerald-600">track</span><span className="text-emerald-500">.</span></strong><small>SMK IDN · Internship monitor</small></span>
-      </a>
+      </Link>
       <div className="sidebar-body">
         <p className="nav-caption">WORKSPACE</p>
         <nav aria-label="Navigasi dashboard" className="sidebar-nav">
-          {links.map(({ id, label, icon: Icon }) => (
-            <a key={id} href={`#${id}`} onClick={() => setActive(id)} className={`nav-link ${active === id ? "is-active" : ""}`} aria-current={active === id ? "location" : undefined}>
-              <Icon /><span>{label}</span>{active === id && <span className="nav-dot" />}
-            </a>
+          {links.map(({ href, label, icon: Icon }) => (
+            <Link key={href} href={href} className={`nav-link ${pathname === href ? "is-active" : ""}`} aria-current={pathname === href ? "page" : undefined}>
+              <Icon /><span>{label}</span>{pathname === href && <span className="nav-dot" />}
+            </Link>
           ))}
         </nav>
         <div className="sidebar-note">
