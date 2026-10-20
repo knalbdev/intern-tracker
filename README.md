@@ -36,7 +36,7 @@ node --test tests/public-content.test.mjs
 ### Cara kerja pengambilan data
 
 - `app/api/sheet-data/route.ts` mengambil tab **Jonggol Ikhwan**, **Akhwat**, dan
-  **Solo** langsung dari endpoint CSV publik Google Sheets (`gviz/tq`), tanpa API
+  **Solo** dari ekspor CSV asli Google Sheets (`export?format=csv&gid=...`), tanpa API
   key — karena sheet ini di-share "siapa saja yang punya link". Setiap request selalu
   mengambil data terbaru (`no-store`), tidak ada cache di server.
 - `lib/sheets.ts` mem-parsing baris mentah per siswa (nama, kelas, tempat PKL,
@@ -47,15 +47,15 @@ node --test tests/public-content.test.mjs
   untuk memuat ulang seketika. Ini bukan push-realtime (websocket), tapi selalu
   menampilkan data terbaru dari spreadsheet dalam hitungan detik saat diminta.
 - ID spreadsheet bisa diganti lewat env var `PKL_SPREADSHEET_ID` bila suatu saat
-  sheet-nya dipindah/diduplikasi.
+  sheet-nya dipindah/diduplikasi. ID tab ditemukan berdasarkan nama tab melalui metadata publik.
 
 ### Catatan tentang data sumber
 
 - Kolom "Kelas" diisi manual dan formatnya tidak selalu konsisten (mis. "XII RPL"
   vs "12 RPL") — dashboard menampilkan apa adanya sesuai isi sheet.
-- Nilai gaji/uang saku kadang berupa teks non-angka ("Estimated", "per project",
-  dsb). Nilai seperti ini tidak dihitung ke Total Pendapatan, tapi jumlahnya
-  ditampilkan di kartu "Penempatan Belum Ada Data Gaji" agar tidak menyesatkan.
+- Salary ditampilkan per penempatan. Nominal tunggal dalam format angka, mata uang, atau singkatan jelas dibaca sebagai angka. Rentang, tarif harian, estimasi, dan per project dipertahankan sebagai teks dan ditandai "Gaji perlu konfirmasi"; tidak diproyeksikan ke total. Kolom kosong/tanda `-` bukan unpaid; hanya nol atau pernyataan unpaid yang eksplisit bernilai nol.
+- Unit dengan Salary terisi tetapi nama perusahaan kosong tetap masuk pembacaan pendapatan dengan label "Perusahaan belum diisi".
+- Ekspor `gviz/tq` tidak dipakai karena dapat menghilangkan Salary teks pada kolom campuran angka/teks. Lihat [audit Salary 20 Oktober 2026](docs/SALARY_AUDIT_2026-10-20.md).
 - Total yang dihitung dashboard ini bisa sedikit berbeda dari tab "Ringkasan
   Magang" di spreadsheet — dashboard menghitung langsung dari seluruh baris siswa
   yang ada saat itu, sedangkan formula di tab ringkasan bisa saja belum mencakup

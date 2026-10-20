@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import type { Student } from "@/lib/types";
 import { SectionHeading } from "./SectionHeading";
+import { PlacementSalary } from "./PlacementSalary";
 
 const PAGE_SIZE = 15;
 
@@ -55,6 +56,7 @@ export function StudentTable({ students }: { students: Student[] }) {
                 <th className="px-5 py-2.5">Status</th>
                 <th className="px-5 py-2.5">Tempat PKL</th>
                 <th className="px-5 py-2.5">Posisi</th>
+                <th className="px-5 py-2.5">Salary per penempatan</th>
               </tr>
             </thead>
             <tbody>
@@ -84,11 +86,12 @@ export function StudentTable({ students }: { students: Student[] }) {
                   <td className="px-5 py-2.5 text-slate-600">
                     {s.placements.map((p) => p.posisi).filter(Boolean).join(", ") || "-"}
                   </td>
+                  <td className="px-5 py-3"><PlacementSalary placements={s.placements} /></td>
                 </tr>
               ))}
               {visible.length === 0 && (
                 <tr>
-                  <td colSpan={7} className="px-5 py-8 text-center text-slate-400">
+                  <td colSpan={8} className="px-5 py-8 text-center text-slate-400">
                     Tidak ada data untuk filter ini.
                   </td>
                 </tr>

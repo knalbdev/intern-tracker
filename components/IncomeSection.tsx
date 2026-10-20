@@ -15,6 +15,7 @@ import { formatRupiah } from "@/lib/aggregate";
 import { categorical, ink } from "@/lib/palette";
 import type { Student, UnitIncome } from "@/lib/types";
 import { StatCard } from "./StatCard";
+import { PlacementSalary } from "./PlacementSalary";
 import { SectionHeading } from "./SectionHeading";
 import { IconAlert, IconWallet } from "./icons";
 
@@ -139,6 +140,7 @@ function StudentIncomeTable({ students }: { students: Student[] }) {
               <th className="px-5 py-2.5">Cabang</th>
               <th className="px-5 py-2.5">Jurusan</th>
               <th className="px-5 py-2.5">Kelas</th>
+              <th className="px-5 py-2.5">Salary per penempatan</th>
               <th className="px-5 py-2.5 text-right">Pendapatan</th>
             </tr>
           </thead>
@@ -152,6 +154,7 @@ function StudentIncomeTable({ students }: { students: Student[] }) {
                 <td className="px-5 py-2.5 text-slate-500">{s.cabang}</td>
                 <td className="px-5 py-2.5 text-slate-500">{s.jurusan}</td>
                 <td className="px-5 py-2.5 text-slate-500">{s.kelas}</td>
+                <td className="px-5 py-3"><PlacementSalary placements={s.placements} /></td>
                 <td className="px-5 py-2.5 text-right tabular-nums font-semibold text-slate-800">
                   {s.totalPendapatan > 0 ? formatRupiah(s.totalPendapatan) : "-"}
                 </td>
@@ -159,7 +162,7 @@ function StudentIncomeTable({ students }: { students: Student[] }) {
             ))}
             {sorted.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-5 py-8 text-center text-slate-400">
+                <td colSpan={6} className="px-5 py-8 text-center text-slate-400">
                   Tidak ada data untuk filter ini.
                 </td>
               </tr>
@@ -197,6 +200,7 @@ export function IncomeSection({
   return (
     <section id="pendapatan" className="space-y-4">
       <SectionHeading eyebrow="Uang Saku" title="Pendapatan siswa" />
+      <p className="text-xs leading-relaxed text-slate-500">Salary ditampilkan sesuai setiap penempatan. Total hanya menghitung nominal tunggal yang dapat dibaca; kolom kosong atau nominal belum pasti bukan berarti unpaid. Nilai harian, rentang, dan per project tidak diproyeksikan atau dijumlahkan sebagai gaji tetap.</p>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         <StatCard
           label="Total pendapatan tercatat"
@@ -205,9 +209,9 @@ export function IncomeSection({
           icon={<IconWallet />}
         />
         <StatCard
-          label="Gaji tidak terbaca"
+          label="Gaji perlu konfirmasi"
           value={String(penempatanTanpaGaji)}
-          sub="Teks non-angka; kolom kosong tidak dihitung"
+          sub="Rentang, tarif harian, estimasi, atau teks belum pasti"
           accent="amber"
           icon={<IconAlert />}
         />

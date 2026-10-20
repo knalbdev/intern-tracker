@@ -13,6 +13,7 @@ export function buildCompanyDirectory(students: Student[], query = ""): CompanyD
   const companies = new Map<string, CompanyDirectoryEntry>();
   for (const student of students) {
     for (const placement of student.placements) {
+      if (placement.companyNameMissing) continue;
       const name = placement.namaPerusahaan.trim().replace(/\s+/g, " ");
       if (!name || name === "-") continue;
       const key = name.toLocaleLowerCase("id");

@@ -1,6 +1,7 @@
 export type Placement = {
   slot: number;
   namaPerusahaan: string;
+  companyNameMissing?: boolean;
   pimpinan: string;
   kontak: string;
   tanggalMulai: string;
@@ -8,6 +9,7 @@ export type Placement = {
   alamat: string;
   posisi: string;
   salaryRaw: string;
+  salaryCell?: string;
   salaryAmount: number | null;
 };
 

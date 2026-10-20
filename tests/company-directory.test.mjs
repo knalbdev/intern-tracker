@@ -34,3 +34,10 @@ test('supports company metadata searches and ignores missing company names', () 
   assert.equal(buildCompanyDirectory(students, 'not found').length, 0);
   assert.equal(buildCompanyDirectory([]).length, 0);
 });
+
+test('salary-only units with missing company names do not become fictitious companies', () => {
+  const students = [student('Solo', [placement('Perusahaan belum diisi', { companyNameMissing: true }), placement('Alpha')])];
+  const companies = buildCompanyDirectory(students);
+  assert.equal(companies.length, 1);
+  assert.equal(companies[0].name, 'Alpha');
+});
